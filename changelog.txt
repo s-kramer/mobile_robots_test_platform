@@ -1,0 +1,49 @@
+SK 12.05.2013 00:30
++ inicjalizacja gradient force law - obliczanie potencjałów, obliczanie sił sterujących robotami - wymaga dokończenia
++ drobne poprawki techniczne
++ uruchomienie w pełni springlaw i inverse law 
++ pewnie coś jeszcze...
+
+SK 02.05.2013 21:30
++ rozszerzenie praw sterowania na wszystkie grupy i typy robotów
+
+SK 01.05.2013 20:30
++ uruchomienie symulacji algorytmu inverse Power, 2 - 50 robotów (dla obu typów regulacji - ciągłej i 3 etapowej)
++ rozszerzenie klasy Controler o pole group przechowującej wpisy o przynależności robotów do poszczególnych grup
++ dodanie metod addForce i addGroup do kontrolera - początek scentalizowanego zarządzania robotami
++ ustawienie dodawania parametrów sił jakimi robot działa na inne znane grupy przy dodawaniu robota do świata (przed dodaniem robota należy dodać nazwy wszysttkich grup do kontrolera)
+
+SK 27.04.2013 00:50
++ dodanie regulatora PID do robotów (stała i zmienna prędkość liniowa, 3-etapowa regulacja (obrót, przejazd, obrót)
++ rozszerzenie inversePower
+
+SK 27.04.2013 00:30
++ dodanie pola parent do konstruktora robota - do przekazywania uchwytu do świata (najpierw tworzymy świat, potem tworzymy roboty podając świat za rodzica, potem dodajemy roboty do tablicy w świecie)
++ rozszerzenie inversePower (do dokończenia, do dodania funkcja addGroup())
++ uzupełnienie konstruktorów klas agent i landmark
+
+SK 25.04.2013 22:54
++ rozszerzenie klasy Robot, Leader
++ napisanie skryptu do testowania kinematyki pojedynczego robota singleRobotTest
++ napisanie klasy do inverse power 
++ toDo: opisać struktury wykorzystywane przez robota - przyjmowane (konstruktor) i zwracane (np. stan, pozycja)
+
+KK 23.04.2013 godz 13:42
++ rozszerzenie klasy Controller
+	* pobranie danych od robotów
+	* próba obliczania sztucznych potencjałów Vi(xij) oraz Vh(hil)]
+
+KK 22.04.2013 godz. 23:05
++prawie udana próba dokonania iteracji zerowej świata
+[patrz dokładniej na mailu moje zapytanie]
++musiałem troszkę pogrzebać w Twoich plikach od robota, by przynajmniej mieć pozycję robotów,
+by móc je namalować
+
+KK 22.04.2013 godz. 11:30-13:15 (w przerwie ;) )
++dodanie skryptu do tworzenia odpowiedniej ilości agentów, landmarków i leaderow
++aktualizacja lunch.m
++kontynuacja klas world i controller
+
+KK 16.04.2013 godz. 21:13
++dodanie folderu program i utworzenie szkieletu programu
++próba implementacji world.m

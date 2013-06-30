@@ -1,0 +1,80 @@
+%Copyright 2013 Sebastian Kramer <sebastian.kramer@wp.pl> 
+%This file is part of "Matlab mobile robots test platformi r1.0" 
+%
+%"Matlab mobile robots test platform" is free software: you can redistribute it and/or modify
+%it under the terms of the GNU General Public License as published by
+%the Free Software Foundation, either version 3 of the License, or
+%(at your option) any later version.
+%
+%"Matlab mobile robots test platform r1.0" is distributed in the hope that it will be useful,
+%but WITHOUT ANY WARRANTY; without even the implied warranty of
+%MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%GNU General Public License for more details.
+%
+%You should have received a copy of the GNU General Public License
+%along with "Matlab mobile robots test platform r1.0".  If not, see <http://www.gnu.org/licenses/>.
+
+classdef InversePower < lib.forces.ForceLaws
+    %INVERSEPOWER Summary of this class goes here
+    %   Detailed explanation goes here
+    
+    properties
+        
+%         forceParams;    %struct('groupName','','c',[],'sig',[])
+        groupForces = {};    %cell array - holds all groups force parameters
+        id = 'inv';     %force identifier
+        min_d = 0;      %equlibrum disc NOT IMPLEMENTED
+        step = 1;
+    end
+    methods
+        %construtor
+        function obj = InversePower()
+            %toDo:
+        end
+        function setStep(obj,step)
+           obj.step = step; 
+        end
+        function step = getStep(obj)
+            step = obj.step;
+        end
+        %toDo: rozszerzenie na pozosta³e klasy robotów
+        function F = update(obj, currRobotsArrang, state)
+            F = struct('x',[],'y',[]);
+            
+%             %groups identification
+%             for i=1:numel(currRobotsArrang.aLandmarks)
+%                 obj.groups = unique([obj.groups currRobotsArrang.aLandmarks(i).group]);
+%             end
+%             %check if force parameters are defined for all groups. If not -
+%             %take default
+%             currRobotsArrang
+            r = 0;  %temp ||Xi-Xj||
+            dx = 0; %temp Xi.x - Xj.x (X-axis projection)
+            dy=0;   %temp Xi.y - Xj.y
+            for i=1:numel(currRobotsArrang.aLeaders)
+                %find the distance between robots
+                dx = state.x - currRobotsArrang.aLeaders(i).getState.x;
+                dy = state.y - currRobotsArrang.aLeaders(i).getState.y;
+                r = norm([dx, dy]);
+                for j=1:numel(currRobotsArrang.aLeaders(i).groups)
+                    %find correct c & sig params
+                    %toDo: rozszerzenie na niesymetryczne si³y miêdzy robotami (definicja si³ x2j i j2i?)
+                        paramsIndex = find(cellfun(@(x)strcmp(x.groupName,currRobotsArrang.aLeaders(i).groups{j}),obj.groupForces),1);
+                        for k=1:numel(obj.groupForces{paramsIndex}.c)
+                            h = obj.groupForces{paramsIndex};   %just to shorten
+                            F.x = F.x + (h.c(k)/r^(h.sig(k)))*dx/r
+                            F.y = F.y + (h.c(k)/r^(h.sig(k)))*dy/r
+                            atan2(F.y,F.x)
+                        end
+                end
+            end
+            disp(fprintf('F: %f %f dx %f dy %f r %f\n',F.x,F.y,dx,dy,r));
+        end
+        %arg1 - struct('groupName','','c',[],'sig',[])
+        function addForce(obj, forceParams)
+            obj.groupForces{end+1} =forceParams;
+            
+        end
+    end
+end
+
